@@ -1,0 +1,74 @@
+Use this README file to introduce your application and point to useful places in the API for learning more.
+Run "rake doc:app" to generate API documentation for your models, controllers, helpers, and libraries.
+
+
+1. 레일즈 프로젝트 생성
+ 	rails new YouCloth  -d=mysql
+ 	
+2. devise 설치
+a) Gemfile 에 devise 추가
+
+#Authenticate
+gem 'devise', '>= 2.0.4'
+
+b) bundle install 실행 
+ YouCloth> bundle install
+ devise 를 최신버전으로 업데이트 하려면: gem update devise
+ 
+c) generator 실행 
+YouCloth> rails generate devise:install
+      create  config/initializers/devise.rb
+      create  config/locales/devise.en.yml
+===============================================================================
+
+Some setup you must do manually if you haven't yet:
+
+  1. Ensure you have defined default url options in your environments files. Here 
+     is an example of default_url_options appropriate for a development environment 
+     in config/environments/development.rb:
+
+       config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+
+     In production, :host should be set to the actual host of your application.
+
+  2. Ensure you have defined root_url to *something* in your config/routes.rb.
+     For example:
+
+       root :to => "home#index"
+
+  3. Ensure you have flash messages in app/views/layouts/application.html.erb.
+     For example:
+
+       <p class="notice"><%= notice %></p>
+       <p class="alert"><%= alert %></p>
+
+  4. If you are deploying Rails 3.1 on Heroku, you may want to set:
+
+       config.assets.initialize_on_precompile = false
+
+     On config/application.rb forcing your application to not access the DB
+     or load models when precompiling your assets.
+
+===============================================================================
+
+d)  add Devise to any of your models using the generator:  rails generate devise MODEL
+ Replace MODEL by the class name used for the applications users, it's frequently 'User' but could also be 'Admin'. 
+ This will create a model (if one does not exist) and configure it with default Devise modules. 
+ Next, you'll usually run "rake db:migrate" as the generator will have created a migration file (if your ORM supports them). 
+ This generator also configures your config/routes.rb file to point to Devise controller.
+ 
+ YouCloth> rails generate devise User
+ 
+ e) copy all views to your application:
+
+  YouCloth> rails generate devise:views
+  
+ 3. display the results of the 'index' action (method) in the 'home' controller.
+ 
+  $ rails generate controller home index 
+  
+4. config/environments/development.rb
+
+# In production, :host should be set to the actual host of your application.
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.smtp_settings = {:enable_starttls_auto => false}
