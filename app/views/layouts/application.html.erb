@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>YouCloth</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+ <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+</script>
+ 
+</head>
+<body onload="prettyPrint()">
+<div id="main" class="container_12" role="main">
+  <div class="grid_12">
+	<ul class="hmenu right suffix_1">
+	  <%= render 'devise/menu/registration_items' %>
+	  <%= render 'devise/menu/login_items' %>
+	</ul>
+
+	<%= render :partial => "shared/nicemenu" %>
+	<%= yield %>
+  </div> <!-- class=grid_11 -->
+</div> <!-- id=main -->
+
+</body>
+</html>

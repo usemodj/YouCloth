@@ -1,0 +1,84 @@
+<div id="list">
+<div class="field">
+  <%= label :customer, t(:search) %><br />
+  <%= text_field_tag  :q %>  
+  <button type="button" name="button" id="search_button"><%= t(:find_customer)%></button>
+  <%= link_to t('new_customer'), new_popup_customers_path, :class=>"popup" %>
+</div>
+ 
+<%= form_for(@wash) do |f| %>
+  <% if @wash.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@wash.errors.count, "error") %> prohibited this wash from being saved:</h2>
+      <ul>
+      <% @wash.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div id="customer_list"></div>
+  <div class="field">
+    <%= f.label t(:stocked_on) %><br />
+    <%= f.date_select :stocked_on %>
+  </div>
+  <div class="field">
+      <%= f.label t(:memo) %><br/>
+      <%= f.text_area :memo, :rows =>5 %>
+   </div>
+ <table><thead>
+ <tr><th>&nbsp;</th><th><%= t(:unit_price) %></th> <th><%= t(:count) %></th><th><%= t(:repair) %></th>  <th><%= t(:repair_price) %></th>
+ </tr>
+ </thead>
+ <tbody>
+ <% @cloth_items.each do | item | %>
+   <%= hidden_field :cloth, :cloth_item_id, :index =>nil, :value => item.id %>
+ <tr><td class="right"><%= item.name %> </td>
+   <td class="right"> <%=text_field :cloth, :unit_price, :index => nil,  :value => number_with_delimiter( item.unit_price, :delimiter => ",") , :onblur =>"number_format(this)", :onfocus =>"delete_number_delimiter(this)" , :class =>'right', :size =>4 %>원 </td>
+ <td class="right"> <%= text_field 'cloth', :count, :index =>nil, :class =>'right', :size =>2 %>개 </td>
+ <td>  <%= text_field :cloth, :repair, :index =>nil %> </td>
+ <td>   <%= text_field :cloth, :repair_price, :index =>nil, :size =>4, :class =>'right', :onblur =>"number_format(this)", :onfocus =>"delete_number_delimiter(this)" %>원 </td></tr>
+ <% end %>
+ </tbody>
+ </table> 
+  <div class="contentinfo">** 등록을 취소할 항목은 '개수 = 0 또는 공백' 을 입력하면 해당 항목은 등록되지 않습니다.<br/>
+  ** 세탁은 하지 않고 수선만 할 경우 '세탁단가=0 또는 공백' 을 입력하고 '개수'값과 '수선가격'을 입력하면 수선 항목이 등록됩니다.
+  </div> 
+     
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+</div><!-- id=list -->
+
+<script type="text/javascript">
+jQuery(function($){
+  $("#search_button").click( function( ) {
+    var q = $("#q").val();
+   // alert(q);
+    $.ajax({
+      type: 'GET',
+      url: '/washes/customers',
+      data: { q:   q },
+      success: function(data) {
+      // alert( data);
+       $("#customer_list").html( data);
+      },
+       error: function( data){ 
+        // alert("error:#{data}");
+         $("#customer_list").html(data);
+       }
+    });
+    return false;
+  });
+
+  $('.popup').click(function() {
+    var winProps='height=600,width=500,resizable=yes,scrollbars=yes';
+    var newWin=open($(this).attr('href'),'aWin',winProps);
+    newWin.focus();
+    return false; 
+  });
+});
+
+</script>

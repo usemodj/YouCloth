@@ -1,0 +1,618 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"st",
+				"status"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "app/controllers/admin/dashboard_controller.rb",
+			"settings":
+			{
+				"buffer_size": 132,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/controllers/washes_controller.rb",
+			"settings":
+			{
+				"buffer_size": 4837,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/views/admin/dashboard/index.html.erb",
+			"settings":
+			{
+				"buffer_size": 91,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/views/washes/new.html.erb",
+			"settings":
+			{
+				"buffer_size": 79,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/views/layouts/admin.html.erb",
+			"settings":
+			{
+				"buffer_size": 475,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "config/application.rb",
+			"settings":
+			{
+				"buffer_size": 2825,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/controllers/customers_controller.rb",
+			"settings":
+			{
+				"buffer_size": 3828,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/controllers/cloth_items_controller.rb",
+			"settings":
+			{
+				"buffer_size": 2281,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/views/shared/_nicemenu.html.erb",
+			"settings":
+			{
+				"buffer_size": 3910,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "config/locales/ko.yml",
+			"settings":
+			{
+				"buffer_size": 4664,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/views/washes/show.html.erb",
+			"settings":
+			{
+				"buffer_size": 2052,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/views/washes/_newform.html.erb",
+			"settings":
+			{
+				"buffer_size": 2417,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "o:\n  date:\n    abbr_day_names:\n    - 일\n    - 월\n    - 화\n    - 수\n    - 목\n    - 금\n    - 토\n    abbr_month_names:\n    - \n    - 1월\n    - 2월\n    - 3월\n    - 4월\n    - 5월\n    - 6월\n    - 7월\n    - 8월\n    - 9월\n    - 10월\n    - 11월\n    - 12월\n    day_names:\n    - 일요일\n    - 월요일\n    - 화요일\n    - 수요일\n    - 목요일\n    - 금요일\n    - 토요일\n    formats:\n      default: ! '%Y/%m/%d'\n      long: ! '%Y년 %m월 %d일 (%a)'\n      short: ! '%m/%d'\n    month_names:\n    - \n    - 1월\n    - 2월\n    - 3월\n    - 4월\n    - 5월\n    - 6월\n    - 7월\n    - 8월\n    - 9월\n    - 10월\n    - 11월\n    - 12월\n    order:\n    - :year\n    - :month\n    - :day\n  datetime:\n    distance_in_words:\n      about_x_hours:\n        one: 약 한 시간\n        other: 약 %{count}시간\n      about_x_months:\n        one: 약 한 달\n        other: 약 %{count}달\n      about_x_years:\n        one: 약 일 년\n        other: 약 %{count}년\n      almost_x_years:\n        one: 일 년 이하\n        other: ! '%{count}년 이하'\n      half_a_minute: 30초\n      less_than_x_minutes:\n        one: 일 분 이하\n        other: ! '%{count}분 이하'\n      less_than_x_seconds:\n        one: 일 초 이하\n        other: ! '%{count}초 이하'\n      over_x_years:\n        one: 일 년 이상\n        other: ! '%{count}년 이상'\n      x_days:\n        one: 하루\n        other: ! '%{count}일'\n      x_minutes:\n        one: 일 분\n        other: ! '%{count}분'\n      x_months:\n        one: 한 달\n        other: ! '%{count}달'\n      x_seconds:\n        one: 일 초\n        other: ! '%{count}초'\n    prompts:\n      day: 일\n      hour: 시\n      minute: 분\n      month: 월\n      second: 초\n      year: 년\n  errors: &errors\n    format: ! '%{attribute} %{message}'\n    messages:\n      accepted: 을(를) 반드시 확인해야 합니다\n      blank: 에 내용을 입력해 주세요\n      confirmation: 은(는) 서로 일치해야 합니다\n      empty: 에 내용을 입력해 주세요\n      equal_to: 은(는) %{count}과 같아야 합니다\n      even: 에 짝수를 입력해 주세요\n      exclusion: 은(는) 이미 예약되어 있는 값입니다\n      greater_than: 은(는) %{count}보다 커야 합니다\n      greater_than_or_equal_to: 은(는) %{count}보다 크거야 같아야 합니다\n      inclusion: 은(는) 목록에 포함되어 있는 값이 아닙니다\n      invalid: 은(는) 올바르지 않은 값입니다\n      less_than: 은(는) %{count}보다 작아야 합니다\n      less_than_or_equal_to: 은(는) %{count}과 작거나 같아야 합니다\n      not_a_number: 에 숫자를 입력해 주세요\n      not_an_integer: 에 정수를 입력해 주세요\n      odd: 에 홀수를 입력해 주세요\n      record_invalid: 데이터 검증에 실패하였습니다. %{errors}\n      taken: 은(는) 이미 존재합니다.\n      too_long: 은(는) %{count}자를 넘을 수 없습니다\n      too_short: 은(는) 적어도 %{count}자를 넘어야 합니다\n      wrong_length: 은(는) %{count}자여야 합니다\n    template:\n      body: ! '다음 항목에 문제가 발견되었습니다:'\n      header:\n        one: 한 개의 오류가 발생해 %{model}를 저장 할 수 없습니다\n        other: ! '%{count}개의 오류가 발생해 %{model}를 저장 할 수 없습니다'\n  helpers:\n    select:\n      prompt: 선택해주세요\n    submit:\n      create: 등록\n      submit: 제출\n      update: 갱신\n  number:\n    currency:\n      format:\n        delimiter: ! ','\n        format: ! '%n%u'\n        precision: 0\n        separator: .\n        significant: false\n        strip_insignificant_zeros: false\n        unit: 원\n    format:\n      delimiter: ! ','\n      precision: 3\n      separator: .\n      significant: false\n      strip_insignificant_zeros: false\n    human:\n      decimal_units:\n        format: ! '%n%u'\n        units:\n          billion: 십억\n          million: 백만\n          quadrillion: 경\n          thousand: 천\n          trillion: 조\n          unit: ''\n      format:\n        delimiter: ''\n        precision: 3\n        significant: true\n        strip_insignificant_zeros: true\n      storage_units:\n        format: ! '%n%u'\n        units:\n          byte: 바이트\n          gb: 기가바이트\n          kb: 킬로바이트\n          mb: 메가바이트\n          tb: 테라바이트\n    percentage:\n      format:\n        delimiter: ''\n    precision:\n      format:\n        delimiter: ''\n  support:\n    array:\n      last_word_connector: ! ', '\n      two_words_connector: ! '와(과) '\n      words_connector: ! ', '\n  time:\n    am: 오전\n    formats:\n      default: ! '%Y/%m/%d %H:%M:%S'\n      long: ! '%Y년 %B월 %d일, %H시 %M분 %S초 %Z'\n      short: ! '%y/%m/%d %H:%M'\n    pm: 오후\n  # remove these aliases after 'activemodel' and 'activerecord' namespaces are removed from Rails repository\n  activemodel:\n    errors:\n      <<: *errors\n  activerecord:\n    errors:\n      <<: *errors\n\n  the-email-already-exists: '이미 등록된 이메일 입니다.'\n  email-is-required: '이메일이 필요합니다.'\n  customer-was-successfully-created: '고객정보가 성공적으로 저장되었습니다.'\n  customer-was-not-created: 'Customer was not created.'\n  customer-was-successfully-updated:  'Customer was successfully updated.'\n         ",
+			"file": "config/locales/ko.yml~",
+			"file_size": 5353,
+			"file_write_time": 1331163850000000,
+			"settings":
+			{
+				"buffer_size": 4364,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+		],
+		"width": 392.0
+	},
+	"console":
+	{
+		"height": 126.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/jinny/git/YouCloth/YouCloth/app/views/shared/_nicemenu.html.erb",
+		"/home/jinny/git/YouCloth/YouCloth/app/views/admin/dashboard/_nicemenu.html.erb",
+		"/home/jinny/git/YouCloth/YouCloth/app/assets/javascripts/application.js",
+		"/home/jinny/git/YouCloth/YouCloth/app/views/layouts/admin.html.erb",
+		"/home/jinny/git/YouCloth/YouCloth/app/views/layouts/application.html.erb",
+		"/home/jinny/git/YouCloth/YouCloth/app/assets/stylesheets/application.css",
+		"/home/jinny/git/YouCloth/YouCloth/public/index.html.orig",
+		"/home/jinny/git/YouCloth/YouCloth/app/controllers/application_controller.rb",
+		"/home/jinny/git/YouCloth/YouCloth/app/controllers/admin/dashboard_controller.rb",
+		"/home/jinny/.config/sublime-text-2/Packages/Default/Preferences.sublime-settings",
+		"/home/jinny/.config/sublime-text-2/Packages/User/Preferences.sublime-settings",
+		"/home/jinny/.config/sublime-text-2/Packages/User/Distraction Free.sublime-settings",
+		"/home/jinny/.config/sublime-text-2/Packages/User/Ruby.sublime-settings",
+		"/home/jinny/git/YouCloth/YouCloth/config/application.rb",
+		"/home/jinny/git/YouCloth/YouCloth/config/routes.rb",
+		"/home/jinny/git/YouCloth/YouCloth/app/views/admin/dashboard/index.html.erb",
+		"/home/jinny/git/YouCloth/YouCloth/app/controllers/washes_controller.rb"
+	],
+	"find":
+	{
+		"height": 0.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 9,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "app/controllers/admin/dashboard_controller.rb",
+					"settings":
+					{
+						"buffer_size": 132,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								72,
+								72
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rails/Ruby on Rails.tmLanguage",
+							"tab_size": 2
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "app/controllers/washes_controller.rb",
+					"settings":
+					{
+						"buffer_size": 4837,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2383,
+								2383
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rails/Ruby on Rails.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 816.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/views/admin/dashboard/index.html.erb",
+					"settings":
+					{
+						"buffer_size": 91,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								91,
+								91
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rails/HTML (Rails).tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 34.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app/views/washes/new.html.erb",
+					"settings":
+					{
+						"buffer_size": 79,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								44,
+								78
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rails/HTML (Rails).tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "app/views/layouts/admin.html.erb",
+					"settings":
+					{
+						"buffer_size": 475,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								259,
+								267
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rails/HTML (Rails).tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "config/application.rb",
+					"settings":
+					{
+						"buffer_size": 2825,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1791,
+								1870
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "app/controllers/customers_controller.rb",
+					"settings":
+					{
+						"buffer_size": 3828,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								87,
+								158
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "app/controllers/cloth_items_controller.rb",
+					"settings":
+					{
+						"buffer_size": 2281,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								123,
+								149
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "app/views/shared/_nicemenu.html.erb",
+					"settings":
+					{
+						"buffer_size": 3910,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								99,
+								99
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rails/HTML (Rails).tmLanguage",
+							"tab_size": 8,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "config/locales/ko.yml",
+					"settings":
+					{
+						"buffer_size": 4664,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4519,
+								4534
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3366.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "app/views/washes/show.html.erb",
+					"settings":
+					{
+						"buffer_size": 2052,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1175,
+								1274
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rails/HTML (Rails).tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 969.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "app/views/washes/_newform.html.erb",
+					"settings":
+					{
+						"buffer_size": 2417,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								21,
+								61
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Rails/HTML (Rails).tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "config/locales/ko.yml~",
+					"settings":
+					{
+						"buffer_size": 4364,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 207.0,
+	"status_bar_visible": true
+}

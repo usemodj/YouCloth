@@ -1,0 +1,30 @@
+== Wikitext
+The Wikitext extension is a fast wikitext-to-HTML translator written in C and packaged as a Ruby extension.
+- https://github.com/wincent/wikitext
+
+Add to Gemfile
+gem 'wikitext'
+
+=== Rails support
+The Wikitext extension provides a template handler so that templates named following the template_name.html.wikitext format will automatically be translated from wikitext markup into HTML when rendered.
+
+Likewise, a to_wikitext method (aliased as w) is added to the String class (and also NilClass, for convenience) so that content can be easily translated from inside view templates following patterns like:
+
+@post.body.w
+
+== Using RedCloth
+RedCloth is simply an extension of the String class that can handle Textile formatting. Use it like a String and output HTML with its RedCloth#to_html method.
+Using RedCloth
+RedCloth is simply an extension of the String class that can handle Textile formatting. Use it like a String and output HTML with its RedCloth#to_html method.
+
+Simple use:
+
+text = "This is *my* text."
+RedCloth.new(text).to_html
+Add to Gemfile
+gem 'RedCloth'
+
+Simple use:
+
+text = "This is *my* text."
+RedCloth.new(text).to_html

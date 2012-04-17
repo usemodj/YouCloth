@@ -1,0 +1,65 @@
+<div id="nicemenu">
+    <ul>
+        <li><span class="head_menu"><%= link_to t('Home'), root_path %></span>
+        <li><span class="head_menu"><%= link_to t('You'), you_path %> <img src="/assets/arrow.png" width="18" height="15" align="top" class="arrow" /></span>
+            <div class="sub_menu">
+                 <%= link_to t('your_washes'), you_path %>
+                 <%= link_to t('your_posts'), posts_path %>
+                 <a href="index.html">Your Sets</a>
+                 <a href="index.html">Your Archives</a>
+                 <a href="index.html">Your Tags</a>
+                 <a href="index.html">Your Map</a>
+                 <a href="index.html">Your Favorites</a>
+                 <a href="index.html">Your Stats</a>
+                 <a href="index.html" class="item_line">Recent Activity</a>
+                 <a href="index.html">Comments You've Made</a>
+                 <a href="index.html" class="item_line">Upload Photos</a>
+                 <a href="index.html" class="item_line">Your Account</a>
+                 <a href="index.html">Your Profile</a>
+                 <a href="index.html" class="item_line">FlickrMail</a>
+            </div>
+        </li>
+        
+<%# has_role?(:admin) do %>
+        <li><span class="head_menu"><%= link_to t('Wash'), washes_path %><img src="/assets/arrow.png" width="18" height="15" align="top" class="arrow" /></span>
+             <div class="sub_menu">
+                <%= link_to t('Washes'), washes_path %>
+                <%= link_to t('new_wash'), new_wash_path %>
+                <%= link_to t('cloth_items'), cloth_items_path, :class => 'item_line' %>
+                <%= link_to t('new_cloth_item'), new_cloth_item_path %>
+            </div>
+        </li>
+        <li><span class="head_menu"><%= link_to t('Customer'), customers_path %><img src="/assets/arrow.png" width="18" height="15" align="top" class="arrow" /></span>
+            <div class="sub_menu">
+                <%= link_to t('Customers'), customers_path %>
+                <%= link_to t('new_customer'), new_customer_path %>
+            </div>
+        </li>
+<%# end %>
+        <li><span class="head_menu"><%= link_to t('Message'), admin_posts_path %><img src="/assets/arrow.png" width="18" height="15" align="top" class="arrow" /></span>
+        	<div class="sub_menu">
+                <a href="index.html">Your Groups</a>
+                <a href="index.html">Recent Changes</a>
+                <a href="index.html" class="item_line">Search for a Group</a>
+                <a href="index.html" class="item_line">Create a New Group</a>
+            </div>
+        </li>
+        <li><span class="head_menu"><%= link_to t('Dashboard'), admin_dashboard_index_path %><img src="/assets/arrow.png" width="18" height="15" align="top" class="arrow" /></span>
+        <div class="sub_menu">
+                <a href="index.html">Explore Page</a>
+                <a href="index.html">Last 7 Days Interesting</a>
+                <a href="index.html">Calendar</a>
+                <a href="index.html">A Year Ago Today</a>
+                <a href="index.html" class="item_line">World Map</a>
+                <a href="index.html">Places</a>
+                <a href="index.html">Camera Finder</a>
+                <a href="index.html" class="item_line">Popular Tags</a>
+                <a href="index.html">Most Recent Photos</a>
+                <a href="index.html">Creative Commons</a>
+                <a href="index.html" class="item_line">FlickrBlog</a>
+                <a href="index.html" class="item_line">Do More with Your Photos</a>
+                <a href="index.html">Flickr Services</a>
+            </div>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,78 @@
+<%= form_for(@customer,:url => create_popup_customers_path , :html=>{:target =>:popup_iframe}) do |f| %>
+  <% if @customer.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@customer.errors.count, "error") %> prohibited this customer from being saved:</h2>
+
+      <ul>
+      <% @customer.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div class="field">
+  <%= f.label :user_email %><br />
+  <%= text_field  :user, :email %>  
+  <button type="button" name="button" id="user_button">Find User Email</button>
+</div>
+<div id="customer_user_email">
+</div>
+
+<div class="field"><%= f.label :roles %> <br/> 
+<%=  build_role_list('roles_checkbox') %></div>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :mobile %><br />
+    <%= f.text_field :mobile %>
+  </div>
+  <div class="field">
+    <%= f.label :phone %><br />
+    <%= f.text_field :phone %>
+  </div>
+  <div class="field">
+    <%= f.label :address %><br />
+    <%= f.text_field :address %>
+  </div>
+  <div class="field">
+    <%= f.label :address2 %><br />
+    <%= f.text_field :address2 %>
+  </div>
+    
+  <br/>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+  <button type="button" name="button" id="popup_button" onclick="window.close()">Close</button>
+
+<% end %>
+
+<iframe name="popup_iframe" width=0 height=0 border=1>
+</iframe>
+
+<script type="text/javascript">
+jQuery(function($){
+  $("#user_button").click( function( ) {
+    var email = $("#user_email").val();
+    $.ajax({
+      type: 'GET',
+      url: '/customers/users',
+      data: { email:   email },
+      success: function(data) {
+      // alert( data);
+       $("#customer_user_email").html( data);
+      },
+       error: function( data){ 
+        // alert("error:#{data}");
+         $("#customer_user_email").html(data);
+       }
+    });
+    return false;
+  }); 
+});
+</script>
+

@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @cloth_item.name %>
+</p>
+
+<p>
+  <b>No:</b>
+  <%= @cloth_item.no %>
+</p>
+
+<p>
+  <b>Unit price:</b>
+  <%= @cloth_item.unit_price %>
+</p>
+
+
+<%= link_to 'Edit', edit_cloth_item_path(@cloth_item) %> |
+<%= link_to 'Back', cloth_items_path %>

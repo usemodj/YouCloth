@@ -1,0 +1,47 @@
+<div id="list">
+  <div>
+    <b><%= @commentable.title %></b>
+  </div>
+  <div style="line-height:1.8em">
+    <%=sanitize escape_precode word_wrap @commentable.body %>
+  </div>
+ <div style="color:#aadddd">  
+    <spen><%= @commentable.updated_at %></spen>
+    <spen>by <%= @commentable.user.email %></spen>
+    <spen><%= link_to 'Edit', edit_admin_post_path(@commentable) %></spen>
+    <spen><%= link_to 'Destroy', admin_post_path(@commentable), confirm: 'Are you sure?', method: :delete %></spen>
+    <div><span><%= distance_of_time_in_words_to_now(@commentable.updated_at)%> 전</span>
+      <span>Replies(<%= @commentable.replies %>)</span>
+      <span>Views(<%= @commentable.views %>)</span>
+    </div>
+  </div>
+
+  <h3>Listing comments</h3>
+  <% @root_comments.each do |root| %>
+    <% Comment.each_with_level( root.self_and_descendants) do |comment, level| %>
+        <%= ('<div class="prefix_1">' * level).html_safe %>
+        <hr/><%= comment.id %>:<%= comment.parent_id %>
+        <div style="line-height:1.8em"> 
+          <%= sanitize( escape_precode( word_wrap(comment.body))) %>
+        </div>
+      <div style="color:#aabbbb">  
+        <spen><%= comment.updated_at %></spen>
+        <spen>by <%= comment.user.email %></spen>
+         <spen><%= link_to 'Reply', admin_post_comment_path(@commentable,comment) %></spen>
+       <spen><%= link_to 'Edit', edit_admin_post_comment_path(@commentable,comment) %></spen>
+        <spen><%= link_to 'Destroy', admin_post_comment_path(@commentable, comment), confirm: 'Are you sure?', method: :delete %></spen>
+      </div>
+     <%= ('</div>' * level).html_safe %> 
+    <% end %>
+  <% end %>
+
+  <br />
+  <h2>New Comment</h2>  
+  <%= form_for Comment.new, :url => admin_post_comments_path(@commentable) do |f| %>  
+    <div>  
+        <%= f.label :body %> <br/> 
+        <%= f.text_area :body, rows: 12, cols: 68  %>  
+      </div>  
+      <div><%= submit_tag "Add Comment" %> &nbsp; <%= link_to t('Back'), admin_posts_path %></div>  
+   <% end %>  
+</div>

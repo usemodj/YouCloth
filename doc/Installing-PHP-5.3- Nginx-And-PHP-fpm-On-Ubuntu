@@ -1,0 +1,167 @@
+== Installing PHP 5.3, Nginx And PHP-fpm On Ubuntu/Debian
+
+ref. http://www.howtoforge.com/installing-php-5.3-nginx-and-php-fpm-on-ubuntu-debian
+
+Since Apache is most of the time a memory hungy process, people started to look for different ways to host their website. Apache is clearly not the only webserver available. A few good examples are lighttpd and nginx. In this tutorial I will show you how to install it on your Ubuntu server. This tutorial also applies to Debian, though. There is only a very small difference.
+
+Ready? Let's begin shall we.
+
+ 
+
+Step 0 - Preliminary Notes
+In order to complete this tutorial, I assume you have installed a base system of Debian or Ubuntu. How this can be done, can be read in different tutorials. This tutorial only focusses on getting nginx+php running without much hassle.
+
+ 
+
+Step 1 - Nginx
+Installing nginx is the first step we have to do. This can be easily done by downloading it from the repository.
+
+sudo apt-get install nginx
+
+The default vhost has to be changed in order to work properly.
+
+sudo vim /etc/nginx/sites-available/default
+
+A nice starting point for your config is:
+
+server {
+    listen   80;
+    server_name  localhost;
+    access_log  /var/log/nginx/localhost.access.log;
+
+## Default location
+    location / {
+        root   /var/www;
+        index  index.php;
+    }
+
+## Images and static content is treated different
+    location ~* ^.+.(jpg|jpeg|gif|css|png|js|ico|xml)$ {
+      access_log        off;
+      expires           30d;
+      root /var/www;
+    }
+
+## Parse all .php file in the /var/www directory
+    location ~ .php$ {
+        fastcgi_split_path_info ^(.+\.php)(.*)$;
+        fastcgi_pass   backend;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  /var/www$fastcgi_script_name;
+        include fastcgi_params;
+        fastcgi_param  QUERY_STRING     $query_string;
+        fastcgi_param  REQUEST_METHOD   $request_method;
+        fastcgi_param  CONTENT_TYPE     $content_type;
+        fastcgi_param  CONTENT_LENGTH   $content_length;
+        fastcgi_intercept_errors        on;
+        fastcgi_ignore_client_abort     off;
+        fastcgi_connect_timeout 60;
+        fastcgi_send_timeout 180;
+        fastcgi_read_timeout 180;
+        fastcgi_buffer_size 128k;
+        fastcgi_buffers 4 256k;
+        fastcgi_busy_buffers_size 256k;
+        fastcgi_temp_file_write_size 256k;
+    }
+
+## Disable viewing .htaccess & .htpassword
+    location ~ /\.ht {
+        deny  all;
+    }
+}
+upstream backend {
+        server 127.0.0.1:9000;
+}
+ 
+Ok, we're done here. Now we'll install the needed files for PHP.
+
+ 
+
+Step 2 - Installing PHP
+Many sites rely on PHP for providing them dynamic content, whether this is a wiki, forum software, weblog or something entirely different.
+
+If you are running Ubuntu, we first have to resolve two dependencies required for the dotdeb packages. If you are running the amd64 version, you should replace i386 with amd64.
+
+For Debian you won't have to do this!
+
+cd /tmp
+
+Ubuntu Packages Search: http://packages.ubuntu.com/
+
+wget http://us.archive.ubuntu.com/ubuntu/pool/main/k/krb5/libkrb53_1.6.dfsg.4~beta1-5ubuntu2_i386.deb
+
+wget http://us.archive.ubuntu.com/ubuntu/pool/main/i/icu/libicu38_3.8-6ubuntu0.2_i386.deb
+
+sudo dpkg -i *.deb
+
+Again, this is only required if you're on Ubuntu.
+
+The rest of the tutorial applies to both Ubuntu & Debian.
+
+We'll have to add the dotdeb repository to the APT sources, so we can use their packaged PHP 5.3 and php-fpm:
+
+sudo echo "deb http://php53.dotdeb.org stable all" >> /etc/apt/sources.list
+
+Update apt:
+
+sudo apt-get update
+
+The resulting text should include dotdeb.
+
+Now we'll install PHP (part 1):
+
+sudo apt-get install php5-cli php5-common php5-suhosin
+
+We have to install the cli before the rest, because this will cause problems later on.
+
+sudo apt-get install php5-fpm php5-cgi
+
+sudo apt-get install  php5-mysql  mcrypt
+sudo ldconfig
+
+If you are planning to use a database or require specific modules (mcrypt, ldap, snmp etc) you can install them as well.
+
+Ok, so now we have nginx and PHP.
+
+One minor remark: If you are using "php short tags" (<?) you should enable them in your php.ini files (for both fpm and cli). If you do not change this, you will see your code in plain text!
+
+ 
+
+Step 3 - Finalizing
+Restart nginx in order to catch up with the config changes we made earlier.
+
+sudo /etc/init.d/nginx restart
+
+The restart should have gone without any problems.
+
+After installing php5-fpm, it should have been started. If you did change your php.ini files, you have to restart php5-fpm.
+
+sudo /etc/init.d/php5-fpm restart
+
+All right. They should now both be running.
+
+ 
+
+Step 4 - Testing
+In order to test if the execution of PHP is working, create an index.php file in /var/www with the following content:
+
+<?php phpinfo(); ?>
+Visit your webserver and you should be able to see the generated phpinfo. If not, something went wrong.
+
+ 
+
+Step 5 - Troubleshooting & Final notes
+If  you did not see the phpinfo, there might be something wrong. In order to track down what went wrong, you can check the nginx error log:
+
+sudo tail /var/log/nginx/error.log
+
+Remember, if you did change your php.ini you have to restart php5-fpm. Restarting nginx isn't' necessary.
+
+In my example config I've enabled the fastcgi error interception. If a serious error occurs (for instance a "cannot redeclare class xyz"), nginx can catch this page and show a "nice" error page that something went wrong. This way, there is less information given out in case something is going seriously wrong.
+
+If you do not like this, you can turn it off.
+
+If php5-fpm is not running, your PHP files cannot be parsed and nginx will show the user an error page.
+
+Well, I guess we're done and you are now able to serve PHP with your new nginx based webserver. Nginx is pretty nice and you can configure a lot. If you need rewrites, be aware that nginx does not work with .htaccess files. You will need to change your vhost settings in order for the rewrites to work.
+

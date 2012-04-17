@@ -1,0 +1,169 @@
+== Setup Ruby Enterprise Edition, nginx and Passenger (aka mod_rails) on Ubuntu
+  POSTED ON NOV 20TH, 2009 IN QUICK TIPS, RUBY, RUBY ON RAILS 
+ref. http://programmingzen.com/2009/11/20/setup-ruby-enterprise-edition-nginx-and-passenger-aka-mod_rails-on-ubuntu/
+
+The following is a very short guide on setting up Ruby Enterprise Edition (REE), nginx and Passenger, for serving Ruby on Rails applications on Ubuntu. It also includes a few quick and easy optimization tips.
+
+We start with setting up REE (x64), using the .deb file provided by Phusion:
+
+wget http://rubyforge.org/frs/download.php/66163/ruby-enterprise_1.8.7-2009.10_amd64.deb
+sudo dpkg -i ruby-enterprise_1.8.7-2009.10_amd64.deb
+ruby -v
+In output you should see “ruby 1.8.7 (2009-06-12 patchlevel 174)…” or similar. If this is the case, good; while you are there, update RubyGems and the installed gems:
+
+sudo gem update --system
+sudo gem update
+Next, you’ll need to install nginx, which is a really fast web server. The Phusion team has made it very easy to install, but if you simply follow most instructions found elsewhere, you’ll get the following error:
+
+checking for system md library ... not found
+checking for system md5 library ... not found
+checking for OpenSSL md5 crypto library ... not found
+
+./configure: error: the HTTP cache module requires md5 functions
+from OpenSSL library.  You can either disable the module by using
+--without-http-cache option, or install the OpenSSL library in the
+system,
+or build the OpenSSL library statically from the source with nginx by
+using
+--with-http_ssl_module --with-openssl=
+ options.
+Instead, we are going to install libssl-dev first and then nginx and its Passenger module:
+
+sudo aptitude install libssl-dev
+sudo passenger-install-nginx-module
+Follow the prompt and accept all the defaults (when prompted to chose between 1 and 2, pick 1).
+
+Before I proceed with the configuration, I like to create an init script and have it boot at startup (the script itself is adapted from one provided by the excellent articles at slicehost.com):
+
+sudo vim /etc/init.d/nginx
+The content of which needs to be:
+
+#! /bin/sh
+
+### BEGIN INIT INFO
+# Provides:          nginx
+# Required-Start:    $all
+# Required-Stop:     $all
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts the nginx web server
+# Description:       starts nginx using start-stop-daemon
+### END INIT INFO
+
+PATH=/opt/nginx/sbin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/opt/nginx/sbin/nginx
+NAME=nginx
+DESC=nginx
+
+test -x $DAEMON || exit 0
+
+# Include nginx defaults if available
+if [ -f /etc/default/nginx ] ; then
+    . /etc/default/nginx
+fi
+
+set -e
+
+. /lib/lsb/init-functions
+
+case "$1" in
+  start)
+    echo -n "Starting $DESC: "
+    start-stop-daemon --start --quiet --pidfile /opt/nginx/logs/$NAME.pid \
+        --exec $DAEMON -- $DAEMON_OPTS || true
+    echo "$NAME."
+    ;;
+  stop)
+    echo -n "Stopping $DESC: "
+    start-stop-daemon --stop --quiet --pidfile /opt/nginx/logs/$NAME.pid \
+        --exec $DAEMON || true
+    echo "$NAME."
+    ;;
+  restart|force-reload)
+    echo -n "Restarting $DESC: "
+    start-stop-daemon --stop --quiet --pidfile \
+        /opt/nginx/logs/$NAME.pid --exec $DAEMON || true
+    sleep 1
+    start-stop-daemon --start --quiet --pidfile \
+        /opt/nginx/logs/$NAME.pid --exec $DAEMON -- $DAEMON_OPTS || true
+    echo "$NAME."
+    ;;
+  reload)
+      echo -n "Reloading $DESC configuration: "
+      start-stop-daemon --stop --signal HUP --quiet --pidfile /opt/nginx/logs/$NAME.pid \
+          --exec $DAEMON || true
+      echo "$NAME."
+      ;;
+  status)
+      status_of_proc -p /opt/nginx/logs/$NAME.pid "$DAEMON" nginx && exit 0 || exit $?
+      ;;
+  *)
+    N=/etc/init.d/$NAME
+    echo "Usage: $N {start|stop|restart|reload|force-reload|status}" >&2
+    exit 1
+    ;;
+esac
+
+exit 0
+Change its permission and have it startup at boot:
+
+sudo chmod +x /etc/init.d/nginx
+sudo /usr/sbin/update-rc.d -f nginx defaults
+From now on, you’ll be able to start, stop and restart nginx with it. Start the server as follows:
+
+sudo /etc/init.d/nginx start
+Heading over to your server IP with your browser, you should see “Welcome to nginx!”. If you do, great, we can move on with the configuration of nginx for your Rails app.
+
+Edit nginx’ configuration file:
+
+sudo vim /opt/nginx/conf/nginx.conf
+Adding a server section within the http section, as follows:
+
+    server {
+        listen 80;
+        server_name example.com;
+        root /somewhere/my_rails_app/public;
+        passenger_enabled on;
+        rails_spawn_method smart;
+    }
+The server name can also be a subdomain if you wish (e.g., blog.example.com). It’s important that you point the root to your Rails’ app public directory.
+
+The rails_spawn_method directive is very efficient, allowing Passenger to consume less memory per process and speed up the spawning process, whenever your Rails application is not affected by its limitations (for a discussion about this you can read the proper section in the official guide).
+
+If you have lots of RAM (e.g., more than 512 MB) on your server, you may want to consider increasing you maximum pool size, with the directive passenger_max_pool_size from its default size of 6. Conversely, if you want to limit the number of processes running at any time and consume less memory on a small VPS (e.g., 128 to 256MB), you can decrease that number down to 2 (or something in that range). (Always test a bunch of configurations to find one that works for you). You can read more about this directive, in the official guide.
+
+While you are modifying nginx’ configuration, you may also want to increase the worker processes (e.g., to 4, on a typical VPS) and add a few more tweaks (such as enabling gzip compression):
+
+# ...
+http {
+    passenger_root /usr/local/lib/ruby/gems/1.8/gems/passenger-2.2.5;
+    passenger_ruby /usr/local/bin/ruby;
+
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    access_log  logs/access.log;
+
+    sendfile        on;
+    keepalive_timeout  65;
+    tcp_nodelay on;
+
+    gzip on;
+    gzip_comp_level 2;
+    gzip_proxied any;   
+
+    server {
+    #...
+When you are happy with the changes, save the file, and restart nginx:
+
+sudo /etc/init.d/nginx restart
+If you wish to restart Passenger in the future, without having to restart the whole web server, you can simply run the following command:
+
+touch /somewhere/my_rails_app/tmp/restart.txt
+Passenger also provides a few handy monitoring tools. Check them out:
+
+sudo passenger-status
+sudo passenger-memory-stats
+That’s it, you are ready to go! I hope that you find these few notes useful.
+
+  

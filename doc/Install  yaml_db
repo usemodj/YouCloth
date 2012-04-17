@@ -1,0 +1,24 @@
+== Install  yaml_db
+
+$ git clone  git://github.com/lostapathy/yaml_db.git
+
+$cd yaml_db
+yaml_db$ gem build yaml_db.gemspec 
+  Successfully built RubyGem
+  Name: yaml_db
+  Version: 0.2.2
+  File: yaml_db-0.2.2.gem
+
+yaml_db$ gem install yaml_db-0.2.2.gem 
+Successfully installed yaml_db-0.2.2
+1 gem installed
+-----------------
+
+== Add to Gemfile 
+In case you are using "bundler", you need to add something like this to your Gemfile:
+
+gem 'yaml_db', :git => 'git://github.com/lostapathy/yaml_db.git'
+
+And in case there is .gemspec file, it should be able to fetch and install the gem when running bundle install.
+
+$ rails_app> bundle install

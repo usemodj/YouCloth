@@ -1,0 +1,31 @@
+<div id="list">
+<h1>Listing cloth_items</h1>
+
+<table>
+  <tr>
+    <th>No</th>
+    <th>Name</th>
+    <th>Unit price</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @cloth_items.each do |cloth_item| %>
+  <tr>
+    <td><%= cloth_item.no %></td>
+    <td><%= cloth_item.name %></td>
+    <td style="text-align:right"><%= number_with_delimiter( cloth_item.unit_price, :delimiter => ",", :locale=> :kr)  %>
+    <!--%= number_to_currency( cloth_item.unit_price, :delimiter => ",", :precision =>0, :locale => :kr, :unit => "")  %-->
+    </td>
+    <td><%= link_to 'Show', cloth_item %></td>
+    <td><%= link_to 'Edit', edit_cloth_item_path(cloth_item) %></td>
+    <td><%= link_to 'Destroy', cloth_item, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+<%#= will_paginate @cloth_items, :style => 'color:blue' %>
+<br />
+
+<%= link_to 'New Cloth item', new_cloth_item_path %>
+</div><!-- id=list -->

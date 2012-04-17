@@ -1,0 +1,30 @@
+<h1>Listing cloths</h1>
+
+<table>
+  <tr>
+  	<th>Unit Price</th>
+  	<th>Count </th>
+  	<th>Repair </th>
+  	<th>Repair Price </th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @cloths.each do |cloth| %>
+  <tr>
+  	<td class="right"><%= cloth.unit_price %></td>
+  	<td class="right"><%= cloth.count %></td>
+  	<td><%= cloth.repair %></td>
+  	<td class="right"><%= cloth.repair_price %></td>
+  	
+    <td><%= link_to 'Show', cloth %></td>
+    <td><%= link_to 'Edit', edit_cloth_path(cloth) %></td>
+    <td><%= link_to 'Destroy', cloth, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Cloth', new_cloth_path %>

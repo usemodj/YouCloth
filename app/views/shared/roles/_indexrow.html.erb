@@ -1,0 +1,8 @@
+<li>
+    <span class="roleDescription"><%= current_role.description %></span>
+    <span class="roleCommands">[<%= link_to 'Show', current_role %> -
+    <%= link_to 'Edit', edit_role_path(current_role) %> -
+    <%= link_to 'Destroy', current_role, confirm: 'Are you sure?', method: :delete %>]
+    </span>
+  </li>
+  <%= the_children %>

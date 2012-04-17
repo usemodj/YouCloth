@@ -1,0 +1,62 @@
+  <div id="list">
+  <%= form_tag washes_path, :method => :get  do %>
+    <div class="field">
+    <%= label :wash, t(:wash_search) %><br/>
+    <%= select_tag 'field', options_for_select(YouCloth::WASH_SEARCH_FIELD, params[:field]) %> 
+    <%= text_field_tag 'q', params[:q] %> 
+    <%= submit_tag t(:find_wash) %>
+    </div>
+  <% end %>
+
+  <h1><%= t(:listing_washes)%></h1>
+   <%= link_to t(:new_wash), new_wash_path %>
+
+    <div class="flickr_pagination">
+      <%= will_paginate @washes, :container => false %>
+      <div class='page_info'>(<%= page_entries_info @washes %>)</div>
+    </div>
+
+  <table>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Mobile/<br/>
+          Phone</th>
+      <th>Address</th>
+      <th>Address2</th>
+      <th>Stocked on</th>
+      <th>Released on</th>
+      <th>Status</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+
+  <% @washes.each do |wash| %>
+    <tr>
+      <td><%= wash.id %></td>
+      <td><%= wash.name %></td>
+      <td><%= wash.email %></td>
+      <td><%= wash.mobile %>/<br/>
+          <%= wash.phone %></td>
+      <td><%= wash.address %></td>
+      <td><%= wash.address2 %></td>
+      <td><%= wash.stocked_on %><br/>
+          <span style="font-size:small;color:#aaa"><%= distance_of_time_in_words_to_now(wash.stocked_on)%> 전</span></td>
+      <td><%= wash.released_on %></td>
+      <td><%= wash.status %></td>
+      <td><%= link_to 'Show', wash %></td>
+      <td><%= link_to 'Edit', edit_wash_path(wash) %></td>
+      <td><%= link_to 'Destroy', wash, confirm: 'Are you sure?', method: :delete %></td>
+    </tr>
+  <% end %>
+  </table>
+    <div class="flickr_pagination">
+      <%= will_paginate @washes, :container => true %>
+      <div class='page_info'>(<%= page_entries_info @washes %>)</div>
+     </div>
+  <br />
+
+  <%= link_to t(:new_wash), new_wash_path %>
+</div> <!-- id=list -->

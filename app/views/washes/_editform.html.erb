@@ -1,0 +1,109 @@
+
+<%= form_for(@wash) do |f| %>
+  <% if @wash.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@wash.errors.count, "error") %> prohibited this wash from being saved:</h2>
+      <ul>
+      <% @wash.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<table>
+  <thead><tr><th></th><th></th></tr>
+  </thead>
+  <tbody>
+  <tr><td style="vertical-align:top">
+    <%= f.hidden_field :customer_id %>
+    <div class="field">
+      <%= f.label t(:email) %><br />
+      <%= f.text_field :email, :disabled => true %>
+    </div>
+    <div class="field">
+      <%= f.label t(:name) %><br />
+      <%= f.text_field :name %>
+    </div>
+    <div class="field">
+      <%= f.label (:mobile) %><br />
+      <%= f.text_field :mobile %>
+    </div>
+    <div class="field">
+      <%= f.label t(:phone) %><br />
+      <%= f.text_field :phone %>
+    </div>
+    <div class="field">
+      <%= f.label t(:address) %><br />
+      <%= f.text_field :address %>
+    </div>
+    <div class="field">
+      <%= f.label t(:address2) %><br />
+      <%= f.text_field :address2 %>
+    </div>
+
+  </td><td style="width:4em"></td>
+  <td style="vertical-align:top">
+    <div id="customer_list"></div>
+    <div>  
+      <div class="field" style="float:left">
+        <%= f.label t(:stocked_on) %><br />
+        <%= f.date_select :stocked_on %>
+      </div>
+      <div class="field"  style="float:left">
+        <%= f.label t(:released_on) %><br />
+        <%= f.date_select :released_on, :include_blank => true %>
+      </div>
+      <div class="field">
+        <%= f.label t(:status) %><br />
+        <%= f.select :status, options_for_select(YouCloth::STATUSES, @wash.status) %>
+      </div>
+      <div class="field">
+        <%= f.label :memo %><br/>
+        <%= f.text_area :memo, :cols=>50, :rows=>4 %>
+      </div>
+    </div>
+   <div id="list">  
+     <table><thead>
+       <tr><th>&nbsp;</th><th><%= t(:unit_price) %><th>&nbsp;</th></th> <th><%= t(:count) %><th>&nbsp;</th></th>
+       <th><%= t(:repair) %></th> <th><%= t(:repair_price) %><th>&nbsp;</th></th><th><%= t(:status) %></th>
+       </tr>
+       </thead>
+       <tbody>
+       <% @cloth_items.each do | item | 
+       		if  item.cloth_count.to_i > 0  then %>
+        <%= hidden_field :cloth, :id, :index =>nil, :value => item.cloth_id %>
+       <%= hidden_field :cloth, :cloth_item_id, :index =>nil, :value => item.id %>
+       <tr><td class="right grid_1"><%= item.name %> </td>
+         <td class="right"> <%=text_field :cloth, :unit_price,  :value => number_with_delimiter( item.cloth_unit_price, :delimiter => ","), :index => nil , :onblur =>"number_format(this)", :onfocus =>"delete_number_delimiter(this)" , :class =>'price', :size => 4 %></td><td>원 </td>
+       <td class="right"> <%= text_field 'cloth', :count, :value => item.cloth_count, :index =>nil, :class =>'right', :size => 2 %></td><td>개 </td>
+       <td>  <%= text_field :cloth, :repair, :value => item.cloth_repair, :index =>nil %> </td>
+       <td>   <%= text_field :cloth, :repair_price, :value =>number_with_delimiter( item.cloth_repair_price, :delimiter => ","), :index =>nil, :size => 4, :class =>'price', :onblur =>"number_format(this)", :onfocus =>"delete_number_delimiter(this)" %></td><td>원 </td>
+       			<td><%= select_tag 'cloth[][status]', options_for_select(  YouCloth::STATUSES, item.cloth_status) %>
+      </td>
+       </tr>
+       		<% else %>
+       <%= hidden_field :cloth, :cloth_item_id, :index =>nil, :value => item.id %>
+       <tr><td class="right" style="color:gray"><%= item.name %> </td>
+         <td class="right"> <%=text_field :cloth, :unit_price, :index => nil,  :value => number_with_delimiter( item.unit_price, :delimiter => ","),:onblur =>"number_format(this)", :onfocus =>"delete_number_delimiter(this)" , :class =>'right', :size =>4  %></td><td>원 </td>
+       <td class="right"> <%= text_field 'cloth', :count, :index =>nil, :class =>'right', :size => 2 %></td><td>개 </td>
+       <td>  <%= text_field :cloth, :repair, :index =>nil %> </td>
+       <td>   <%= text_field :cloth, :repair_price,  :value => number_with_delimiter(item.cloth_repair_price, :delimiter => ","), :index =>nil, :size => 4, :class =>'right', :onblur =>"number_format(this)", :onfocus =>"delete_number_delimiter(this)" %></td><td>원 </td>
+       <td><%= select_tag 'cloth[][status]', options_for_select(YouCloth::STATUSES) %>
+       </tr>
+     <%  	end #end of if
+     		end # end of item %>
+     </tbody>
+     </table>
+     <div class="contentinfo">** 등록을 취소할 항목은 '개수 = 0 또는 공백' 을 입력하면 해당 항목은 등록되지 않습니다.<br/>
+      ** 세탁은 하지 않고 수선만 할 경우 '세탁단가=0 또는 공백' 을 입력하고 '개수'값과 '수선가격'을
+입력하면 수선 항목이 등록됩니다.
+     </div> 
+    </div><!-- id=list -->
+  </td></tr>
+</tbody>
+</table>       
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+

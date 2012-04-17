@@ -1,0 +1,1 @@
+<li><%= check_box_tag "role[child_ids][]", current_role.id, @role.children.include?(current_role), :disabled => current_role.eql?(@role) %><%= current_role.name %></li><%= the_children %>

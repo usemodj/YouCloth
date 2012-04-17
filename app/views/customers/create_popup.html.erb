@@ -1,0 +1,8 @@
+
+<script type="text/javascript">
+jQuery(function($){
+  //alert( $(parent.opener.document).find('#q').val());
+  $(parent.opener.document).find('#q').val('<%= @customer.user.email %>');
+  //parent.window.close();
+});
+</script>

@@ -1,0 +1,31 @@
+mysqldump
+
+1. Dump each database using mysqldump:
+% mysqldump --databases db_name > db_name.sql
+2. Drop each database with DROP DATABASE.
+3. Stop the server, reconfigure it to set lower_case_table_names, and restart the
+server.
+4. Reload each dump file using mysql:
+% mysql < db_name.sql
+
+-------------------
+== yaml_db gem
+
+Simply add to your Gemfile:
+
+gem 'yaml_db'
+
+Usage
+rake db:data:dump   ->   Dump contents of Rails database to db/data.yml
+rake db:data:load   ->   Load contents of db/data.yml into the 
+
+rake db:data:dump_dir   ->   Dump contents of database to curr_dir_name/tablename.extension (defaults to yaml)
+rake db:data:load_dir   ->   Load contents of db/data_dir into database
+
+== Examples
+One common use would be to switch your data from one database backend to another. For example, let's say you wanted to switch from SQLite to MySQL. You might execute the following steps:
+
+rake db:dump
+Edit config/database.yml and change your adapter to mysql, set up database params
+mysqladmin create [database name]
+rake db:load

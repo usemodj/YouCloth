@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+<p>
+  <b>Unit Price:</b>
+  <%= @cloth.unit_price %>
+</p>
+
+<p>
+  <b>Count:</b>
+  <%= @cloth.count %>
+</p>
+
+<p>
+  <b>Repair:</b>
+  <%= @cloth.repair %>
+</p>
+<p>
+  <b>Repair Price:</b>
+  <%= @cloth.repair_price %>
+</p>
+
+
+<%= link_to 'Edit', edit_cloth_path(@cloth) %> |
+<%= link_to 'Back', cloths_path %>

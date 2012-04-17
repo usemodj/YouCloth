@@ -1,0 +1,29 @@
+<table><thead>
+<tr><td> Email(Roles) </td><td>name</td><td>Mobile</td><td>Phone</td><td>Address</td><td>Address2</td></tr>
+</thead><tbody>
+<% @customers.each do |customer| %>
+<tr>
+<td>
+	<%= radio_button :wash, :customer_id, customer.id, :email =>customer.user.email %><%= customer.user.email %> (<%= customer.user.roles.map{ |r| r.name}.join(',') %>)
+</td>
+<td><%= customer.name %></td>
+<td><%= customer.mobile %></td>
+<td><%= customer.phone %></td>
+<td><%= customer.address %></td>
+<td><%= customer.address2 %></td>
+</tr>
+<% end %>
+</tbody>
+</table>
+<div class="field">
+	<%= label :wash, :email %> <br />
+	<%= text_field :wash, :email %>
+</div>
+	
+<script>
+jQuery( function($){
+  $("input:radio[name='wash[customer_id]']").click(function(){
+      $("#wash_email").val($("input:radio[name='wash[customer_id]']:checked").attr('email'));
+  });
+});
+</script>

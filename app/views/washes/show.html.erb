@@ -1,0 +1,107 @@
+<div id="main" class="container_12" role="main">
+  <div class="grid_12">
+    
+
+<p id="notice"><%= notice %></p>
+
+<table  style="vertical-align:top"><thead><tr> </tr></thead>
+<tbody><tr><td>
+<p>
+  <b><%= t(:customer)%>:</b>
+  <%= @wash.customer_id %>
+</p>
+  <b><%= t(:email)%>:</b>
+  <%= @wash.email %>
+</p>
+
+<p>
+  <b><%= t(:name)%>:</b>
+  <%= @wash.name %>
+</p>
+
+<p>
+  <b><%= t(:mobile)%>:</b>
+  <%= @wash.mobile %>
+</p>
+
+<p>
+  <b><%= t(:phone)%>:</b>
+  <%= @wash.phone %>
+</p>
+
+<p>
+  <b><%= t(:address)%>:</b>
+  <%= @wash.address %>
+</p>
+
+<p>
+  <b><%= t(:address2)%>:</b>
+  <%= @wash.address2 %>
+</p>
+<p>
+  <b><%= t(:updated_at)%>:</b>
+  <%= @wash.updated_at %>
+</p>
+<p>
+  <b><%= t(:created_at)%>:</b>
+  <%= @wash.created_at %>
+</p>
+
+</td><td style="width:5em">&nbsp;&nbsp;
+</td><td   style="vertical-align:top">
+  <div>
+    <div class="field" style="float:left;padding:1em">
+      <%= label :wash, t(:stocked_on) %><br />
+      <%= @wash.stocked_on %><br/>
+      <span style="font-size:small;color:#aaa"><%= distance_of_time_in_words_to_now(@wash.stocked_on)%> 전</span>
+    </div>
+    <div class="field" style="float:left;padding:1em">
+      <%= label :wash, t(:released_on) %><br />
+      <%= @wash.released_on %>
+    </div>
+    <div class="field" style="float:left;padding:1em">
+      <%= label :wash, t(:status) %><br />
+      <%= @wash.status %>
+    </div><br style="clear:both"/>
+    <div class="field">
+      <%= label :wash, t(:memo)%><br/>
+      <%= text_area :wash, :memo, :cols=>50, :rows=>4, :readonly=>true %>
+    </div>
+  </div>
+  <div id="list">
+   <table><thead>
+   <tr><th>&nbsp;</th><th><%= t(:unit_price) %></th> <th><%= t(:count) %></th>
+   <th><%= t(:repair) %></th>  <th><%= t(:repair_price) %></th><th><%= t(:status) %></th>
+   </tr>
+   </thead>
+   <tbody>
+   <% wash_sum = 0; repair_sum = 0 %>
+   <% @wash.cloths.each do | cloth |  %>
+      <%  wash_sum += cloth.unit_price * cloth.count
+              repair_sum += cloth.repair_price %>
+   <tr><td class="right"><%= cloth.cloth_item.name %> </td>
+     <td class="price" > <%=   number_with_delimiter( cloth.unit_price, :delimiter => ",")  %>원 </td>
+   <td class="num"> <%= cloth.count  %>개 </td>
+   <td style="width:220px">  <%= cloth.repair  %> </td>
+   <td class="price">  <%= number_with_delimiter(  cloth.repair_price, :delimiter => ",")  %>원 </td>
+    <td>  <%= cloth.status  %> </td>
+   <% 	end # end of cloth %>
+  </tr></tbody>
+  <tfoot>
+   <tr><td class="sum"> <%= t('wash_sum') %></td><td colspan="2" class="price"> <%= number_with_delimiter(wash_sum) %>원</td><td class="sum"><%= t'repair_sum'%></td><td class="price"><%= number_with_delimiter(repair_sum) %>원</td><td>&nbsp;</td>
+   </tr>
+     <tr><td class="sum"> <%= t('total') %></td><td colspan="2" class="right"></td><td></td><td class="price"><%= number_with_delimiter(wash_sum + repair_sum) %>원</td><td>&nbsp;</td>
+     </tr>
+   </tfoot>
+   </table>      
+</div> <!-- id=list -->
+ 
+</td></tr>
+</tbody>
+</table>
+
+<%= link_to 'Edit', edit_wash_path(@wash) %> |
+<%= link_to 'Back', washes_path %>
+
+  </div> <!-- class=grid_12 -->
+</div> <!-- id=main -->

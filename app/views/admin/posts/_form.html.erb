@@ -1,0 +1,26 @@
+<%#= form_for(@post, :url => admin_posts_path) do |f| %>
+<%= form_for([:admin, @post]) do |f| %>
+  <% if @post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% @post.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><br />
+    <%= f.text_field :title , size: 58%>
+  </div>
+   <div class="field">
+    <%= f.label :body %><br />
+    <%= f.text_area :body , cols:68 %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

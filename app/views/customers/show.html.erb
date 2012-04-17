@@ -1,0 +1,51 @@
+<div  class="container_12" role="main">
+  <div class="grid_12">
+
+    <p id="notice"><%= notice %></p>
+
+    <p>
+      <b>Email:</b>
+      <%= @customer.user.email %>
+    </p>
+    <p>
+    	<b>Roles:</b>
+    	<%= @customer.user.roles.map{|r| r.name}.join(',') %>
+    </p>
+    <p>
+      <b>Name:</b>
+      <%= @customer.name %>
+    </p>
+
+    <p>
+      <b>Mobile:</b>
+      <%= @customer.mobile %>
+    </p>
+
+    <p>
+      <b>Phone:</b>
+      <%= @customer.phone %>
+    </p>
+
+    <p>
+      <b>Address:</b>
+      <%= @customer.address %>
+    </p>
+
+    <p>
+      <b>Address2:</b>
+      <%= @customer.address2 %>
+    </p>
+    <p>
+      <b>Updated at:</b>
+      <%= @customer.updated_at %>
+    </p>
+    <p>
+      <b>Created at:</b>
+      <%= @customer.created_at %>
+    </p>
+    <%= Time.now %>
+
+    <%= link_to 'Edit', edit_customer_path(@customer) %> |
+    <%= link_to 'Back', customers_path %>
+  </div> <!-- class=grid_12 -->
+</div> <!-- id=main -->

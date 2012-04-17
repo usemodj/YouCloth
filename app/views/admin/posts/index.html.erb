@@ -1,0 +1,59 @@
+  <div id="list">
+  <%= form_tag admin_posts_path, :method => :get  do %>
+    <div class="field">
+    <%= label :post, :search %><br/>
+    <%= select_tag 'field', options_for_select(YouCloth::POST_SEARCH_FIELD, params[:field]) %> 
+    <%= text_field_tag 'q', params[:q] %> 
+    <%= submit_tag t('find') %>
+    </div>
+  <% end %>
+
+  <h1>Listing posts</h1>
+   <%= link_to 'New Message', new_admin_post_path %>
+
+    <div class="flickr_pagination">
+      <%= will_paginate @posts, :container => false %>
+      <div class='page_info'>(<%= page_entries_info @posts %>)</div>
+    </div>
+
+  <table>
+    <tr>
+      <th>Id</th>
+      <th><b>Title</b><br/>
+        Subject</th>
+        <th>Replies</th>
+        <th>Views</th>
+       <th>Updated at</th>
+   <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+
+  <% @posts.each do |post| %>
+    <tr>
+      <td><%= post.id %></td>
+      <td><b><%=link_to post.title,  admin_post_comments_path( post)%></b><br/>
+        <%=link_to post.subject, admin_post_comments_path( post) %></td>
+      <td><%= post.replies %></td>
+      <td><%= post.views %></td>
+     <td><%= post.updated_at %><br/>
+          <span style="font-size:small;color:#aaa"><%= distance_of_time_in_words_to_now(post.updated_at)%> 전
+            by <%= post.user.email %>
+          </span></td>
+      <td><%= link_to 'Show', admin_post_comments_path( post) %></td>
+      <td><%= link_to 'Edit', edit_admin_post_path(post) %></td>
+      <td><%= link_to 'Destroy', admin_post_path(post), confirm: 'Are you sure?', method: :delete %></td>
+    </tr>
+  <% end %>
+  </table>
+    <div class="flickr_pagination">
+      <%= will_paginate @posts, :container => true %>
+      <div class='page_info'>(<%= page_entries_info @posts %>)</div>
+     </div>
+  <br />
+
+  <%= link_to 'New Message', new_admin_post_path %>
+</div> <!-- id=list -->
+
+<br />
+

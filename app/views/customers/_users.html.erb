@@ -1,0 +1,16 @@
+<div id="notice"><%= flash[:notice] %></div>
+<% unless @users.nil? %>
+	<% @users.each do |user| %>
+	<div class="entry">
+		<%= radio_button :customer, :user_id, user.id, :email =>user.email %><%= user.email %> (<%= user.roles.map{ |r| r.name}.join(',') %>)
+	</div>
+	<% end %>
+
+	<script>
+	jQuery( function($){
+	  $("input:radio[name='customer[user_id]']").click(function(){
+	      $("#user_email").val($("input:radio[name='customer[user_id]']:checked").attr('email'));
+	  });
+	});
+	</script>
+<% end %>

@@ -1,0 +1,203 @@
+== Running Rails applications using Nginx with Passenger on Ubuntu Server
+
+ref. http://www.ivankuznetsov.com/2010/05/running-rails-applications-using-nginx-with-passenger-on-ubuntu-server.html
+
+If you’re planning to run Rails applications on Nginx using Phusion Passenger, and do it on Ubuntu Linux, here’s what needs to be done.
+
+Even though there’s Ubuntu nginx package available (which works perfectly when you’re running PHP apps using FCGI), if you want to take into use Phusion Passenger, you’ll need to recompile Nginx from sources.
+
+Instructions below were verified on Ubuntu 10.04 (Lucid Lynx) Server Edition.
+
+
+If you already have Nginx ubuntu package installed, uninstall it (NOTE! purge will delete all configuration files – so if you changed them – make a backup for future reference):
+
+sudo aptitude purge nginx
+Assuming you already have Rails stack installed, install Passenger gem:
+
+sudo gem install passenger
+At the time of this writing the latest version of Passenger is 2.2.11
+
+Let’s check dependencies that Ubuntu nginx package has and install them before compilation:
+
+aptitude show nginx | grep Depends
+You’ll see something like:
+Depends: libc6 (>= 2.4), libpcre3 (>= 7.7), libssl0.9.8 (>= 0.9.8k-1), zlib1g
+Install build dependencies and start nginx module installation (it will offer you to recompile nginx)
+sudo apt-get install libc6 libpcre3 libssl0.9.8 zlib1g
+sudo /usr/local/bin/passenger-install-nginx-module
+Choose option 1 (Yes: download, compile and install Nginx for me) unless you need special configuration parameters or need features not enabled by default (like SSL).
+Further instructions assume that you also chose default installation directory /opt/nginx.
+If you’ve purchased Passenger Enterprise Edition, don’t forget to register it:
+sudo /usr/local/bin/passenger-make-enterprisey
+Now add nginx init script (I just copied this from Ubuntu default nginx package):
+sudo vim /etc/init.d/nginx
+with the following content:
+#! /bin/sh
+
+### BEGIN INIT INFO
+# Provides:          nginx
+# Required-Start:    $local_fs $remote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts the nginx web server
+# Description:       starts nginx using start-stop-daemon
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/nginx/sbin
+DAEMON=/opt/nginx/sbin/nginx
+NAME=nginx
+DESC=nginx
+
+test -x $DAEMON || exit 0
+
+# Include nginx defaults if available
+if [ -f /etc/default/nginx ] ; then
+        . /etc/default/nginx
+fi
+
+set -e
+
+. /lib/lsb/init-functions
+
+test_nginx_config() {
+  if nginx -t $DAEMON_OPTS
+  then
+    return 0
+  else
+    return $?
+  fi
+}
+
+case "$1" in
+  start)
+        echo -n "Starting $DESC: "
+        test_nginx_config
+        start-stop-daemon --start --quiet --pidfile /var/run/$NAME.pid \
+                --exec $DAEMON -- $DAEMON_OPTS || true
+        echo "$NAME."
+        ;;
+  stop)
+        echo -n "Stopping $DESC: "
+        start-stop-daemon --stop --quiet --pidfile /var/run/$NAME.pid \
+                --exec $DAEMON || true
+        echo "$NAME."
+        ;;
+  restart|force-reload)
+        echo -n "Restarting $DESC: "
+        start-stop-daemon --stop --quiet --pidfile \
+                /var/run/$NAME.pid --exec $DAEMON || true
+        sleep 1
+        test_nginx_config
+        start-stop-daemon --start --quiet --pidfile \
+                /var/run/$NAME.pid --exec $DAEMON -- $DAEMON_OPTS || true
+        echo "$NAME."
+        ;;
+  reload)
+        echo -n "Reloading $DESC configuration: "
+        test_nginx_config
+        start-stop-daemon --stop --signal HUP --quiet --pidfile /var/run/$NAME.pid \
+            --exec $DAEMON || true
+        echo "$NAME."
+        ;;
+  configtest)
+        echo -n "Testing $DESC configuration: "
+        if test_nginx_config
+        then
+          echo "$NAME."
+        else
+          exit $?
+        fi
+        ;;
+  status)
+        status_of_proc -p /var/run/$NAME.pid "$DAEMON" nginx && exit 0 || exit $?
+        ;;
+  *)
+        echo "Usage: $NAME {start|stop|restart|reload|force-reload|status|configtest}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0
+Now make this script executable add it to default run levels:
+sudo chmod +x /etc/init.d/nginx
+sudo /usr/sbin/update-rc.d -f nginx defaults
+Edit  nginx.conf to look like this:
+user www-data;
+worker_processes  4;
+
+error_log  /opt/nginx/logs/error.log;
+pid        /var/run/nginx.pid;
+
+events {
+    worker_connections  8192;
+    use epoll;
+}
+
+http {
+    passenger_root /usr/local/lib/ruby/gems/1.8/gems/passenger-2.2.11;
+    passenger_ruby /usr/local/bin/ruby;
+
+    include       /opt/nginx/conf/mime.types;
+
+    # set a default type for the rare situation that
+    # nothing matches from the mimie-type include
+    default_type application/octet-stream;
+
+    # This log format is compatible with any tool like awstats
+    # that can parse standard apache logs.
+    log_format main '$remote_addr - $remote_user [$time_local] '
+                    '"$request" $status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$http_x_forwarded_for"' ;
+
+    access_log  /opt/nginx/logs/access.log;
+
+    sendfile        on;
+    tcp_nopush     on;
+
+    keepalive_timeout  0;
+    tcp_nodelay        on;
+
+    gzip  on;
+    gzip_disable "MSIE [1-6]\.(?!.*SV1)";
+    gzip_http_version 1.0;
+    gzip_comp_level 2;
+    gzip_proxied any;
+    gzip_types text/plain text/css application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+    include /opt/nginx/conf/sites-enabled/*;
+}
+Now create virtual hosts structure (so that it looks like the structure created by Ubuntu original nginx package):
+sudo mkdir /opt/nginx/conf/sites-available
+sudo mkdir /opt/nginx/conf/sites-enabled
+Now it is time to configure your first rails site. Create virtual host configuration in sites-available.
+sudo vim /opt/nginx/conf/sites-available/mysite.com
+Content can be something like:
+server {
+        listen   80;
+        server_name  www.mysite.com;
+
+        access_log  /home/user/logs/www.mysite.com/access.log;
+        root   /home/user/www.mysite.com/public;
+
+        # serve static content directly
+        location ~* \.(ico|jpg|gif|png|css|js|swf|html)$ {
+          if (-f $request_filename) {
+            expires max;
+            break;
+          }
+        }
+
+        passenger_enabled on;
+
+        # deny access to .htaccess files, if Apache's document root
+        # concurs with nginx's one
+        #
+        location ~ /\.ht {
+          deny  all;
+        }
+}
+Make a symlink in sites-enabled directory and restart nginx.
+sudo ln -s /opt/nginx/conf/sites-available/mysite.com /opt/nginx/conf/sites-enabled/mysite.com
+sudo /etc/init.d/nginx restart
+Now open the browser and check that your site is working.

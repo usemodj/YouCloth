@@ -1,0 +1,26 @@
+server {
+    listen 80;
+    server_name youcloth.kr;
+
+    access_log logs/access-youcloth.kr.log;
+    
+    root /home/jinny/rails_app/YouCloth/public;
+
+    # serve static content directly
+    location ~* \.(ico|jpg|gif|png|css|js|swf|html)$ {
+        if (-f $request_filename) {
+                expires max;
+                break;
+            }
+    }
+
+    passenger_enabled on;
+
+    # deny access to .htaccess files, if Apache's document root
+    # concurs with nginx's one
+    #
+    location ~ /\.ht {
+       deny  all;
+    }
+
+}

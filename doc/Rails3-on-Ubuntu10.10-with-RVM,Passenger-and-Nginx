@@ -1,0 +1,102 @@
+== Rails 3 on Ubuntu 10.10 with RVM, Passenger and Nginx
+
+ref. http://thekindofme.wordpress.com/2010/10/24/rails-3-on-ubuntu-10-10-with-rvm-passenger-and-nginx/
+
+This covers setting up a Ubuntu 10.10 box to run rails 3 on production. Please notice it only focus on installing and setting up things mentioned in the title. However there are other things that you should configure and setup when deploying a application to production (like ntpd for example).
+
+== Installing RVM
+
+We will need git before we can get started.
+1
+sudo apt-get install git
+
+Install rvm according to the official guide.
+1
+bash < <( curl http://rvm.beginrescueend.com/releases/rvm-install-head )
+
+add
+1
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
+
+to your .bashrc.
+
+Once you edit your bashrc file execute the following to load rvm without logging out and back in
+1
+source ~/.rvm/scripts/rvm
+
+Just to be safe check wether "rvm is a function", which is what it should be.
+1
+type rvm | head -n1
+
+
+== Install ruby 1.9.2
+
+See what you get out of rvm notes. you will need to install some stuff before you can compile ruby.
+1
+aptitude install build-essential bison openssl libreadline5 libreadline5-dev curl git-core zlib1g zlib1g-dev libssl-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libmysqlclient-dev
+The above packages covers some common stuff. It should be enough to get you started. However depending on what gems you want to install you might need to install additional dependencies.
+
+rvm install 1.9.2
+
+Set 1.9.2 as the default
+
+rvm use 1.9.2 --default
+
+== Passenger
+
+Install passenger as instructed in rvm documentation http://rvm.beginrescueend.com/integration/passenger/
+1
+rvm 1.9.2 --passenger
+2
+rvm 1.9.2
+3
+gem install passenger
+4
+rvmsudo passenger-install-nginx-module
+
+Let passenger downland and install nginx for you.
+Modify /opt/nginx/conf/nginx.conf (thats the default location).
+‘For Nginx users, replace the passenger_ruby line with:’
+1
+passenger_ruby /home/wayne/.rvm/bin/passenger_ruby;
+
+Add a block like this to host your RoR site
+
+server {
+
+      listen 80; #the server will be running on this port
+
+      server_name www.yourhost.com;
+
+      root /home/deployer/your_rails_project/public;   # <--- be sure to point to 'public'!
+
+      passenger_enabled on;
+
+   }
+
+== Nginx init script
+
+From: http://github.com/jnstq/rails-nginx-passenger-ubuntu
+
+cd
+git clone git://github.com/jnstq/rails-nginx-passenger-ubuntu.git
+sudo cp rails-nginx-passenger-ubuntu/nginx/nginx /etc/init.d/nginx
+sudo chown root:root /etc/init.d/nginx
+
+More information on http://wiki.nginx.org/Nginx-init-ubuntu
+
+
+== MySQL
+
+aptitude search mysql
+# sudo apt-get install mysql-client mysql-server
+sudo apt-get install mysql-server-5.5  mysql-client-5.5
+
+Get the source for your rails app. unzip it in your home folder (or where ever you want to. But be sure to edit the nginx config as appropriate).
+
+cd to-your-rails-app-folder
+bundle install
+rake db:setup RAILS_ENV=production
+sudo /etc/init.d/nginx restart
+
+Thats it!

@@ -1,0 +1,31 @@
+<h2>Admin::Dashboard</h2>
+<div id="list">
+    <div class="flickr_pagination">
+      <%= will_paginate @washes, :container => false %>
+      <div class='page_info'>(<%= page_entries_info @washes %>)</div>
+    </div>
+
+	<table><thead><tr>
+		<th><%=t('count')%></th>
+		<th><%=t('name')%></th>
+		<th><%=t('email')%></th>
+		<th><%=t('phone')%></th>
+		<th><%=t('mobile')%></th>
+	 </tr></thead>
+	<tbody>
+	<% @washes.each do |wash| %>
+	<tr><td><%= wash.washes_count %></td>
+		<td><%= wash.name %></td>
+		<td><%= wash.email %></td>
+		<td><%= wash.phone %></td>
+		<td><%= wash.mobile %></td>
+	</tr>
+	<% end %>
+	</tbody>
+	</table>
+    <div class="flickr_pagination">
+      <%= will_paginate @washes, :container => false %>
+      <div class='page_info'>(<%= page_entries_info @washes %>)</div>
+    </div>
+
+</div>

@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Title:</b>
+  <%= @comment.title %>
+</p>
+
+<p>
+  <b>Body:</b>
+  <%= sanitize escape_precode word_wrap  @comment.body%> 
+</p>
+
+<br />
+<h2>Reply Comment</h2>  
+<%= form_for Comment.new, url: post_comment_reply_path(@commentable, @comment)  do |f| %>  
+  <div>  
+      <%= f.label :body %> <br/> 
+      <%= f.text_area :body, rows: 12, cols: 68  %>  
+    </div>  
+    <div><%= submit_tag "Add to Reply" %>
+    	<%= link_to 'Back', post_comments_path(@commentable) %>
+    </div>  
+  
+<% end %>  
