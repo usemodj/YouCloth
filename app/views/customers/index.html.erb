@@ -19,6 +19,7 @@
 
 <table>
   <tr> 
+    <th>ID</th>
     <th>Email</th>
     <th>Name</th>
     <th>Mobile/<br/>
@@ -32,6 +33,7 @@
 
 <% @customers.each do |customer| %>
   <tr>
+    <td><%= customer.id %></td>
     <td><%= customer.user.email unless customer.user.nil? %></td>
     <td><%= customer.name %></td>
     <td><%= customer.mobile %><br/>

@@ -14,10 +14,10 @@ class Admin::DashboardController < ApplicationController
 	end
 
 	def count_by_user_washes
-		@washes = Wash.select(" count(*) AS washes_count, washes.*").group(:email).paginate(page: params[:page]).order("washes_count DESC")
+		@washes = Wash.select(" count(*) AS washes_count, max(washes.stocked_on) AS latest_stocked_on, washes.*").group(:email).paginate(page: params[:page]).order("washes_count DESC")
 		respond_to do |format|
 		  format.html # index.html.erb
-		  format.json { render json: @posts }
+		  format.json { render json: @washes }
 		end
 	end
 

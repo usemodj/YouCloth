@@ -63,7 +63,7 @@ module YouCloth
   STATUSES = ['입고','일부출고','모두출고','포장','보관'];
   #WASH_SEARCH_FIELD = {I18n.t(:all) =>:all, I18n.t(:email)=>:email, I18n.t(:name)=>:name}
   WASH_SEARCH_FIELD = { '모두' =>:all, '이메일'=>:email, '이름'=>:name, '전화'=>:phone, 
-                  '주소'=>:address, '입고일'=>:stocked_on, '출고일'=>:released_on, '상태'=>:status};
+                  '주소'=>:address, '입고일'=>:stocked_on, '출고일'=>:released_on, '상태'=>:status, '고객ID'=>:customer_id};
   CUSTOMER_SEARCH_FIELD = {'모두'=> :all, '이메일'=> :email, '이름'=> :name, '전화'=> :phone,'주소'=> :address};  
   POST_SEARCH_FIELD = {'모두'=>'all', '제목/본문'=> 'body', '갱신일'=>'updated_at'}
 end

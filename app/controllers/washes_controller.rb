@@ -38,6 +38,8 @@ class WashesController < ApplicationController
                 when :status
                   Wash.where(" LOWER(status) LIKE ? ", "%#{q.downcase}%").paginate(:page => params[:page]).order('stocked_on DESC, created_at ASC')
                   #Wash.paginate :page => params[:page]||1, :per_page => 2,:conditions =>[" LOWER(status) LIKE ? ", "%#{q.downcase}%"], :order =>'stocked_on DESC, created_at ASC'
+                 when :customer_id
+                  Wash.where(" customer_id = ? ", q).paginate(:page => params[:page]).order('stocked_on DESC, created_at ASC')
                 else #all
                   where = <<-DOCUMENT
                     LOWER(name) LIKE ? OR LOWER(email) LIKE ? 

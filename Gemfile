@@ -65,5 +65,7 @@ gem 'yaml_db', :git => 'git://github.com/lostapathy/yaml_db.git'
 
 #gem 'acts_as_commentable'
 gem 'acts_as_commentable_with_threading'
-gem 'wikitext'
-gem 'RedCloth'
+#gem 'wikitext'
+#gem 'RedCloth'
+## Hpricot is a fast, flexible HTML parser written in C
+#gem 'hpricot'

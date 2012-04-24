@@ -227,6 +227,7 @@ ko:
   cloth_items: '의류품목'
   new_cloth_item:  '의류품목 등록'  
   stocked_on: '입고일'
+  latest_stocked_on: '최근 입고일'
   released_on: '출고일'
   created_at: '작성일'
   updated_at: '변경일'

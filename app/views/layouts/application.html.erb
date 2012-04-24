@@ -2,6 +2,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
   <title>YouCloth</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
@@ -14,6 +16,8 @@
 <body onload="prettyPrint()">
 <div id="main" class="container_12" role="main">
   <div class="grid_12">
+    <div style="float:left"><%= link_to image_tag("youcloth-kr152.png", :alt => "Sample App", :class => "round"), root_path %>
+    </div>
 	<ul class="hmenu right suffix_1">
 	  <%= render 'devise/menu/registration_items' %>
 	  <%= render 'devise/menu/login_items' %>
@@ -21,7 +25,7 @@
 
 	<%= render :partial => "shared/nicemenu" %>
 	<%= yield %>
-  </div> <!-- class=grid_11 -->
+  </div> <!-- class=grid_12 -->
 </div> <!-- id=main -->
 
 </body>

@@ -36,8 +36,8 @@
   <% @washes.each do |wash| %>
     <tr>
       <td><%= wash.id %></td>
-      <td><%= wash.name %></td>
-      <td><%= wash.email %></td>
+      <td><%= link_to wash.name, washes_path(:field =>:customer_id, :q =>wash.customer_id) %></td>
+      <td><%= link_to wash.email, washes_path(:field=>:email, :q=>wash.email) %></td>
       <td><%= wash.mobile %>/<br/>
           <%= wash.phone %></td>
       <td><%= wash.address %></td>

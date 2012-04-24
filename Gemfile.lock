@@ -7,7 +7,6 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    RedCloth (4.2.9)
     actionmailer (3.2.3)
       actionpack (= 3.2.3)
       mail (~> 2.4.4)
@@ -134,14 +133,12 @@ GEM
       multi_json (>= 1.0.2)
     warden (1.1.1)
       rack (>= 1.0)
-    wikitext (3.0.1)
     will_paginate (3.0.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  RedCloth
   acts_as_commentable_with_threading
   coffee-rails (~> 3.2.1)
   declarative_authorization
@@ -154,6 +151,5 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   therubyracer
   uglifier (>= 1.0.3)
-  wikitext
   will_paginate (>= 3.0.3)
   yaml_db!

@@ -11,14 +11,19 @@
 		<th><%=t('email')%></th>
 		<th><%=t('phone')%></th>
 		<th><%=t('mobile')%></th>
+		<th><%=t('address2')%></th>
+		<th><%=t('latest_stocked_on')%></th>
 	 </tr></thead>
 	<tbody>
 	<% @washes.each do |wash| %>
 	<tr><td><%= wash.washes_count %></td>
-		<td><%= wash.name %></td>
-		<td><%= wash.email %></td>
+		<td><%= link_to wash.name, washes_path(:field => :customer_id, :q =>wash.customer_id) %></td>
+		<td><%=  link_to wash.email, washes_path(:field=>:email, :q=>wash.email)  %></td>
 		<td><%= wash.phone %></td>
 		<td><%= wash.mobile %></td>
+		<td><%= wash.address2 %></td>
+		<td><%= wash.latest_stocked_on%><br/>
+          <span style="font-size:small;color:#aaa"><%= distance_of_time_in_words_to_now(wash.latest_stocked_on)%> 전</span></td>
 	</tr>
 	<% end %>
 	</tbody>
