@@ -210,7 +210,7 @@ ko:
   repair_price: '수선가격'
   repair: '수선'
   status: '상태'
-
+  visit: '방문'
   Home: 'Home'
   You: 'You'
   your_washes: 'Your 세탁물'

@@ -32,7 +32,6 @@
       <th></th>
       <th></th>
     </tr>
-
   <% @washes.each do |wash| %>
     <tr>
       <td><%= wash.id %></td>
@@ -42,7 +41,7 @@
           <%= wash.phone %></td>
       <td><%= wash.address %></td>
       <td><%= wash.address2 %></td>
-      <td><%= wash.stocked_on %><br/>
+      <td><%= link_to wash.stocked_on, washes_path(:field=>:stocked_on, :q=>wash.stocked_on) %><br/>
           <span style="font-size:small;color:#aaa"><%= distance_of_time_in_words_to_now(wash.stocked_on)%> 전</span></td>
       <td><%= wash.released_on %></td>
       <td><%= wash.status %></td>
