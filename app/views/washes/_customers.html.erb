@@ -16,10 +16,10 @@
 </tbody>
 </table>
 <div class="field">
-	<%= label :wash, :email %> <br />
-	<%= text_field :wash, :email %>
+	선택한 <%= label :wash, :email %> <br />
+	<%= text_field :wash, :email, :readonly=> true %>
 </div>
-	
+
 <script>
 jQuery( function($){
   $("input:radio[name='wash[customer_id]']").click(function(){

@@ -6,7 +6,7 @@
   <%= link_to t('new_customer'), new_popup_customers_path, :class=>"popup" %>
 </div>
  
-<%= form_for(@wash) do |f| %>
+<%= form_for @wash do |f| %>
   <% if @wash.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@wash.errors.count, "error") %> prohibited this wash from being saved:</h2>
@@ -27,21 +27,29 @@
       <%= f.label t(:memo) %><br/>
       <%= f.text_area :memo, :rows =>5 %>
    </div>
- <table><thead>
- <tr><th>&nbsp;</th><th><%= t(:unit_price) %></th> <th><%= t(:count) %></th><th><%= t(:repair) %></th>  <th><%= t(:repair_price) %></th>
+
+ <table id="cloth_items_table"><thead>
+ <tr><th>&nbsp;</th><th><%= t(:unit_price) %></th> <th><%= t(:count) %></th><th><%= t(:repair) %></th>  <th><%= t(:repair_price) %></th><th><%= t(:subtotal) %> </th>
  </tr>
  </thead>
+
  <tbody>
- <% @cloth_items.each do | item | %>
-   <%= hidden_field :cloth, :cloth_item_id, :index =>nil, :value => item.id %>
+ <% @cloth_items.each  do | item | %>
+   <%= hidden_field :cloth, :cloth_item_id, :index => nil, :value => item.id %>
  <tr><td class="right"><%= item.name %> </td>
-   <td class="right"> <%=text_field :cloth, :unit_price, :index => nil,  :value => number_with_delimiter( item.unit_price, :delimiter => ",") , :onblur =>"number_format(this)", :onfocus =>"delete_number_delimiter(this)" , :class =>'right', :size =>4 %>원 </td>
- <td class="right"> <%= text_field 'cloth', :count, :index =>nil, :class =>'right', :size =>2 %>개 </td>
- <td>  <%= text_field :cloth, :repair, :index =>nil %> </td>
- <td>   <%= text_field :cloth, :repair_price, :index =>nil, :size =>4, :class =>'right', :onblur =>"number_format(this)", :onfocus =>"delete_number_delimiter(this)" %>원 </td></tr>
+   <td class="right unit_price"> <%=text_field :cloth, :unit_price, :index => nil,  :value => number_with_delimiter( item.unit_price, :delimiter => ",") , :onblur =>"number_format(this)", :onfocus =>"delete_number_delimiter(this)" , :class =>'right', :size =>4 %>원 </td>
+ <td class="right count"> <%= text_field :cloth, :count, :index => nil, :class =>'right', :size =>2 %>개 </td>
+ <td>  <%= text_field :cloth, :repair, :index => nil %> </td>
+ <td>   <%= text_field :cloth, :repair_price, :index => nil, :size =>4, :class =>'right', :onblur =>"number_format(this)", :onfocus =>"delete_number_delimiter(this)" %>원 </td>
+ <td> <%= text_field :cloth, :subtotal , :index => nil, :size =>6, :class =>'right',  :style=>"color:blue", :disabled=> true, :onblur =>"number_format(this)" %>원</td>
+</tr>
  <% end %>
  </tbody>
+ <tfoot><tr><td> </td><td class="right">총 개수:</td><td class="right"><span id="count_total"  style="color:red"></span></td>
+    <td class="right"> 수선 합계/총 합계:</td><td class="right" ><span id="repair_price_total"  style="color:red"></span>/</td><td class="right"><span id="total"  style="color:red"></span></td> 
+ </tr></tfoot>
  </table> 
+ 
   <div class="contentinfo">** 등록을 취소할 항목은 '개수 = 0 또는 공백' 을 입력하면 해당 항목은 등록되지 않습니다.<br/>
   ** 세탁은 하지 않고 수선만 할 경우 '세탁단가=0 또는 공백' 을 입력하고 '개수'값과 '수선가격'을 입력하면 수선 항목이 등록됩니다.
   </div> 
@@ -53,32 +61,99 @@
 </div><!-- id=list -->
 
 <script type="text/javascript">
-jQuery(function($){
-  $("#search_button").click( function( ) {
-    var q = $("#q").val();
-   // alert(q);
-    $.ajax({
-      type: 'GET',
-      url: '/washes/customers',
-      data: { q:   q },
-      success: function(data) {
-      // alert( data);
-       $("#customer_list").html( data);
-      },
-       error: function( data){ 
-        // alert("error:#{data}");
-         $("#customer_list").html(data);
-       }
-    });
-    return false;
-  });
 
-  $('.popup').click(function() {
-    var winProps='height=600,width=500,resizable=yes,scrollbars=yes';
-    var newWin=open($(this).attr('href'),'aWin',winProps);
-    newWin.focus();
-    return false; 
-  });
-});
+ jQuery.noConflict();
+  jQuery(document).ready(function($) {
+
+       $("#search_button").click( function( ) {
+        var q = $("#q").val();
+       // alert(q);
+        $.ajax({
+          type: 'GET',
+          url: '/washes/customers',
+          data: { q:   q },
+          success: function(data) {
+          // alert( data);
+           $("#customer_list").html( data);
+          },
+           error: function( data){ 
+            // alert("error:#{data}");
+             $("#customer_list").html(data);
+           }
+        });
+        return false;
+      });
+
+      $('.popup').click(function() {
+        var winProps='height=600,width=500,resizable=yes,scrollbars=yes';
+        var newWin=open($(this).attr('href'),'aWin',winProps);
+        newWin.focus();
+        return false; 
+      });   
+
+       $('#new_wash').submit( function(){
+          //alert($(":input:radio[name='wash[customer_id]']:checked").val());
+          //alert($("#customer_list :input:radio[name='wash[customer_id]']:checked").val());
+         if( !$("#customer_list :input:radio[name='wash[customer_id]']:checked").val()){
+            alert('고객찾기로 찾은 고객을 선택하세요 ');
+            $('#q').focus();
+            return false;
+          }
+          return true;
+      });
+
+      var inputs = $('#cloth_items_table tbody tr td.unit_price input, #cloth_items_table tbody tr td.count input, #cloth_items_table tbody tr td #cloth__repair_price');
+      var count_inputs = $('#cloth_items_table tbody tr td #cloth__count');
+      var repair_price_inputs = $('#cloth_items_table tbody tr td #cloth__repair_price');
+      var subtotal_inputs = $('#cloth_items_table tbody tr td #cloth__subtotal');
+      //alert( subtotal_inputs.length);
+
+       //inputs.change(function() {
+      inputs.blur(function() {
+       //alert('change');
+        // Finding them this way purely so that we don't duplicate the code,
+        // it would be faster to separate the inputs array into their type and bind the change appropriately.
+        var unit_price = $(this).closest('tr').find('td #cloth__unit_price').val().replace(/[^\d\.]/g,'');
+        var count = $(this).closest('tr').find('td #cloth__count').val().replace(/[^\d\.]/g,'');
+        var repair_price = $(this).closest('tr').find('td #cloth__repair_price').val().replace(/[^\d\.]/g,'');
+        var subtotal_input = $(this).closest('tr').find('td #cloth__subtotal');
+        
+        unit_price = isNaN(unit_price)? 0: unit_price * 1;
+        count = isNaN(count)? 0: count * 1;
+        repair_price = isNaN(repair_price)? 0: repair_price * 1;
+
+        var subtotal = (count > 0)? unit_price * count + repair_price: 0;
+        subtotal_input.val(subtotal.number_with_delimiter());
+        //number_format( subtotal_input);
+
+        update_totals();
+      });
+      
+      function update_totals() {
+        var  count_total = 0;
+        var repair_total = 0;
+        var total = 0;
+        //alert("update_totals");
+        $.each(count_inputs, function(){
+          var val = parseInt($(this).val().replace(/[^\d\.]/g, ''));
+          count_total +=  isNaN(val) ? 0: val;
+         });
+        $.each(repair_price_inputs, function(){
+          var val = parseInt($(this).val().replace(/[^\d\.]/g, ''));
+          repair_total +=  isNaN(val) ? 0: val;
+        });
+        $.each(subtotal_inputs, function(){
+          var val = parseInt($(this).val().replace(/[^\d\.]/g, ''));
+          total +=  isNaN(val) ? 0: val;
+        });
+      
+        //alert( total);
+        $("#count_total").html( count_total.number_with_delimiter() + '개');
+        $("#repair_price_total").html( repair_total.number_with_delimiter() + '원');
+        $("#total").text( total.number_with_delimiter() + '원');
+        
+      }    
+
+    });  
 
 </script>

@@ -36,7 +36,9 @@ function number_format(elm){
 function delete_number_delimiter(elm){
   elm.value = elm.value.replace(/[^\d\.]/g,'');
 }
-
+function delete_delimiter( str){
+	return str.replace(/[^\d\.]/g, '');
+}
 
 /* nicemenu */
 
